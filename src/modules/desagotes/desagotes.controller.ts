@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DesagotesService } from './desagotes.service';
-import { CreateDesagoteDto } from './dto/create-desagote.dto';
-import { UpdateDesagoteDto } from './dto/update-desagote.dto';
+import { DesagotesService } from './desagotes.service.js';
+import { CreateDesagoteDto } from './dto/create-desagote.dto.js';
+import { UpdateDesagoteDto } from './dto/update-desagote.dto.js';
 
 @Controller('desagotes')
 export class DesagotesController {

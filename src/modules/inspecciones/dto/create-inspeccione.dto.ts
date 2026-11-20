@@ -1,44 +1,43 @@
-import { IsDateString, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, Min } from 'class-validator';
+import { IsDateString, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 
 export class CreateInspeccioneDto {
-  @IsString({ message: 'El número de acta debe ser texto' })
-  @IsNotEmpty({ message: 'El número de acta es obligatorio' })
-  @MaxLength(30)
+  @IsString({ message: 'El número de acta tiene que ser texto' })
+  @IsNotEmpty({ message: 'Falta ingresar el número de acta' })
+  @MaxLength(30, { message: 'El número de acta no puede pasar de 30 caracteres' })
   numeroActa: string;
 
-  @IsDateString({}, { message: 'La fecha debe tener formato AAAA-MM-DD' })
-  @IsNotEmpty({ message: 'La fecha del acta es obligatoria' })
+  @IsDateString({}, { message: 'La fecha tiene que tener formato válido (ej: 2026-11-20)' })
   fecha: string;
 
-  @IsString({ message: 'El nombre del inspector debe ser texto' })
-  @IsNotEmpty({ message: 'El inspector es obligatorio' })
-  @MaxLength(100)
-  inspector: string;
-
-  @IsString({ message: 'La referencia de la ordenanza debe ser texto' })
-  @IsNotEmpty({ message: 'La referencia de la ordenanza es obligatoria' })
-  @MaxLength(100)
+  @IsString({ message: 'La norma tiene que ser texto' })
+  @IsNotEmpty({ message: 'Falta ingresar la norma' })
+  @MaxLength(100, { message: 'La norma no puede pasar de 100 caracteres' })
   norma: string;
 
-  @IsString({ message: 'El artículo debe ser texto' })
-  @IsNotEmpty({ message: 'El artículo es obligatorio' })
-  @MaxLength(50)
+  @IsString({ message: 'El artículo tiene que ser texto' })
+  @IsNotEmpty({ message: 'Falta ingresar el artículo' })
+  @MaxLength(50, { message: 'El artículo no puede pasar de 50 caracteres' })
   articulo: string;
 
-  @IsString({ message: 'Las observaciones deben ser texto' })
-  @IsNotEmpty({ message: 'Los hechos observados son obligatorios' })
+  @IsString({ message: 'Las observaciones tienen que ser texto' })
+  @IsNotEmpty({ message: 'Falta escribir las observaciones' })
   observaciones: string;
 
   @IsOptional()
-  @IsString({ message: 'El documento debe ser texto' })
-  @MaxLength(100)
+  @IsString({ message: 'El documento tiene que ser texto' })
+  @MaxLength(100, { message: 'El documento no puede pasar de 100 caracteres' })
   documento?: string;
 
   @IsOptional()
-  @IsIn(['Registrada', 'Pendiente de derivación'], { message: 'Estado administrativo no válido' })
+  @IsString({ message: 'El estado tiene que ser texto' })
+  @MaxLength(30, { message: 'El estado no puede pasar de 30 caracteres' })
   estado?: string;
 
   @IsInt({ message: 'Debe seleccionar una solicitud válida' })
-  @Min(1, { message: 'La solicitud debe ser mayor o igual a 1' })
+  @Min(1, { message: 'El id de la solicitud tiene que ser mayor a 0' })
   solicitudId: number;
+
+  @IsInt({ message: 'Debe seleccionar un inspector válido' })
+  @Min(1, { message: 'El id del inspector tiene que ser mayor a 0' })
+  inspectorId: number;
 }

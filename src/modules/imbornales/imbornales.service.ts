@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateImbornaleDto } from './dto/create-imbornale.dto';
-import { UpdateImbornaleDto } from './dto/update-imbornale.dto';
+import { CreateImbornaleDto } from './dto/create-imbornale.dto.js';
+import { UpdateImbornaleDto } from './dto/update-imbornale.dto.js';
 
 @Injectable()
 export class ImbornalesService {

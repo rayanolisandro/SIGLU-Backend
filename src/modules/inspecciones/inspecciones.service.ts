@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateInspeccioneDto } from './dto/create-inspeccione.dto';
-import { UpdateInspeccioneDto } from './dto/update-inspeccione.dto';
+import { CreateInspeccioneDto } from './dto/create-inspeccione.dto.js';
+import { UpdateInspeccioneDto } from './dto/update-inspeccione.dto.js';
 
 @Injectable()
 export class InspeccionesService {

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { InspeccionesService } from './inspecciones.service';
-import { CreateInspeccioneDto } from './dto/create-inspeccione.dto';
-import { UpdateInspeccioneDto } from './dto/update-inspeccione.dto';
+import { InspeccionesService } from './inspecciones.service.js';
+import { CreateInspeccioneDto } from './dto/create-inspeccione.dto.js';
+import { UpdateInspeccioneDto } from './dto/update-inspeccione.dto.js';
 
 @Controller('inspecciones')
 export class InspeccionesController {
