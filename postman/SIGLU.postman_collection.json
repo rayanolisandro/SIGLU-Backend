@@ -1,0 +1,784 @@
+{
+  "info": {
+    "name": "SIGLU Backend",
+    "description": "Pedidos para probar la API de SIGLU. Antes: correr la migración y el seed (carga roles, áreas, marcas/modelos, estados y tipos). Probar en orden: 0. Catálogos (para ver los ids), 1. Auth, 2. Users, 3. Unidades, 4. Imbornales, 5. Solicitudes, 6. Inspecciones, 7. Desagotes. Los ids que se crean se guardan solos. Los ids de catálogos de los ejemplos son los que deja el seed en una base nueva. Dejar los 'Borrar' para el final.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": "1"
+    },
+    {
+      "key": "unidadId",
+      "value": "1"
+    },
+    {
+      "key": "imbornalId",
+      "value": "1"
+    },
+    {
+      "key": "solicitudId",
+      "value": "1"
+    },
+    {
+      "key": "inspeccionId",
+      "value": "1"
+    },
+    {
+      "key": "desagoteId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Catálogos",
+      "item": [
+        {
+          "name": "Roles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/catalogos/roles"
+          }
+        },
+        {
+          "name": "Áreas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/catalogos/areas"
+          }
+        },
+        {
+          "name": "Marcas y modelos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/catalogos/marcas"
+          }
+        },
+        {
+          "name": "Estados",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/catalogos/estados"
+          }
+        },
+        {
+          "name": "Tipos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/catalogos/tipos"
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Auth",
+      "item": [
+        {
+          "name": "Registrar usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"cuil\": \"20123456789\",\n  \"legajo\": \"L-001\",\n  \"email\": \"juan.perez@siglu.com\",\n  \"password\": \"Clave1234\",\n  \"rolId\": 1,\n  \"areaId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Guarda el id que devolvió la API para usarlo en los pedidos siguientes",
+                  "const datos = pm.response.json();",
+                  "if (datos.id) pm.collectionVariables.set('userId', datos.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Iniciar sesión",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"juan.perez@siglu.com\",\n  \"password\": \"Clave1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Guarda el id que devolvió la API para usarlo en los pedidos siguientes",
+                  "const datos = pm.response.json();",
+                  "if (datos.access_token) pm.collectionVariables.set('token', datos.access_token);",
+                  "if (datos.user && datos.user.id) pm.collectionVariables.set('userId', datos.user && datos.user.id);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Users",
+      "item": [
+        {
+          "name": "Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/users"
+          }
+        },
+        {
+          "name": "Buscar uno",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/users/{{userId}}"
+          }
+        },
+        {
+          "name": "Editar",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/users/{{userId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"areaId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Borrar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/users/{{userId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Unidades",
+      "item": [
+        {
+          "name": "Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/unidades",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interno\": 12,\n  \"dominio\": \"AB123CD\",\n  \"kilometraje\": 0,\n  \"modeloId\": 1,\n  \"tipoId\": 1,\n  \"estadoId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Guarda el id que devolvió la API para usarlo en los pedidos siguientes",
+                  "const datos = pm.response.json();",
+                  "if (datos.id) pm.collectionVariables.set('unidadId', datos.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/unidades"
+          }
+        },
+        {
+          "name": "Buscar uno",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/unidades/{{unidadId}}"
+          }
+        },
+        {
+          "name": "Editar",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/unidades/{{unidadId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kilometraje\": 15000,\n  \"estadoId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Borrar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/unidades/{{unidadId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Imbornales",
+      "item": [
+        {
+          "name": "Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/imbornales",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ubicacion\": \"San Martín y Belgrano\",\n  \"tipoId\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Guarda el id que devolvió la API para usarlo en los pedidos siguientes",
+                  "const datos = pm.response.json();",
+                  "if (datos.id) pm.collectionVariables.set('imbornalId', datos.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/imbornales"
+          }
+        },
+        {
+          "name": "Buscar uno",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/imbornales/{{imbornalId}}"
+          }
+        },
+        {
+          "name": "Editar",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/imbornales/{{imbornalId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"limpieza\": \"Limpio\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Borrar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/imbornales/{{imbornalId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Solicitudes",
+      "item": [
+        {
+          "name": "Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/solicitudes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ubicacion\": \"San Martín 1234\",\n  \"descripcion\": \"Imbornal tapado, se inunda la esquina cuando llueve\",\n  \"prioridad\": \"Alta\",\n  \"telefonoContacto\": \"3624000000\",\n  \"tipoId\": 5,\n  \"estadoId\": 4,\n  \"imbornalId\": {{imbornalId}},\n  \"userId\": {{userId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Guarda el id que devolvió la API para usarlo en los pedidos siguientes",
+                  "const datos = pm.response.json();",
+                  "if (datos.id) pm.collectionVariables.set('solicitudId', datos.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/solicitudes"
+          }
+        },
+        {
+          "name": "Buscar uno",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/solicitudes/{{solicitudId}}"
+          }
+        },
+        {
+          "name": "Editar",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/solicitudes/{{solicitudId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estadoId\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Borrar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/solicitudes/{{solicitudId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Inspecciones",
+      "item": [
+        {
+          "name": "Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/inspecciones",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroActa\": \"ACTA-0001\",\n  \"fecha\": \"2026-11-21\",\n  \"norma\": \"Ordenanza 1234\",\n  \"articulo\": \"Art. 5\",\n  \"observaciones\": \"Se constata obstrucción del imbornal\",\n  \"estadoId\": 7,\n  \"solicitudId\": {{solicitudId}},\n  \"inspectorId\": {{userId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Guarda el id que devolvió la API para usarlo en los pedidos siguientes",
+                  "const datos = pm.response.json();",
+                  "if (datos.id) pm.collectionVariables.set('inspeccionId', datos.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/inspecciones"
+          }
+        },
+        {
+          "name": "Buscar uno",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/inspecciones/{{inspeccionId}}"
+          }
+        },
+        {
+          "name": "Editar",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/inspecciones/{{inspeccionId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estadoId\": 8\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Borrar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/inspecciones/{{inspeccionId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Desagotes",
+      "item": [
+        {
+          "name": "Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/desagotes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2026-11-25\",\n  \"horaInicio\": \"08:00\",\n  \"horaFin\": \"10:30\",\n  \"estadoId\": 9,\n  \"solicitudId\": {{solicitudId}},\n  \"unidadId\": {{unidadId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Guarda el id que devolvió la API para usarlo en los pedidos siguientes",
+                  "const datos = pm.response.json();",
+                  "if (datos.id) pm.collectionVariables.set('desagoteId', datos.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/desagotes"
+          }
+        },
+        {
+          "name": "Buscar uno",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/desagotes/{{desagoteId}}"
+          }
+        },
+        {
+          "name": "Editar",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/desagotes/{{desagoteId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estadoId\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Borrar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/desagotes/{{desagoteId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Pruebas de errores",
+      "item": [
+        {
+          "name": "400 - id que no es número",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/unidades/abc"
+          }
+        },
+        {
+          "name": "400 - datos mal cargados",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/unidades",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interno\": \"doce\",\n  \"dominio\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "400 - estado que no existe",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/unidades",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interno\": 99,\n  \"dominio\": \"ZZ999ZZ\",\n  \"modeloId\": 1,\n  \"tipoId\": 1,\n  \"estadoId\": 999\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "404 - id que no existe",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/unidades/99999"
+          }
+        },
+        {
+          "name": "409 - unidad repetida (mandar 2 veces)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/unidades",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interno\": 12,\n  \"dominio\": \"AB123CD\",\n  \"modeloId\": 1,\n  \"tipoId\": 1,\n  \"estadoId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "409 - borrar unidad con desagotes",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/unidades/{{unidadId}}"
+          }
+        },
+        {
+          "name": "401 - login con contraseña incorrecta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"juan.perez@siglu.com\",\n  \"password\": \"otraClave99\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "400 - hora de fin antes que la de inicio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/desagotes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2026-11-25\",\n  \"horaInicio\": \"10:00\",\n  \"horaFin\": \"08:00\",\n  \"estadoId\": 9,\n  \"solicitudId\": {{solicitudId}},\n  \"unidadId\": {{unidadId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
