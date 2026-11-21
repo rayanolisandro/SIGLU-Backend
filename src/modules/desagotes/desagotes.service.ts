@@ -1,10 +1,5 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { isPrismaForeignKeyError } from '../prisma/prisma-error.util.js';
 import { CreateDesagoteDto } from './dto/create-desagote.dto.js';
 import { UpdateDesagoteDto } from './dto/update-desagote.dto.js';
 
@@ -13,37 +8,21 @@ export class DesagotesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createDesagoteDto: CreateDesagoteDto) {
-    // La hora de fin tiene que ser después de la hora de inicio
-    if (createDesagoteDto.horaFin <= createDesagoteDto.horaInicio) {
-      throw new BadRequestException(
-        'La hora de fin tiene que ser posterior a la hora de inicio',
-      );
-    }
+    await this.validateSolicitud(createDesagoteDto.solicitudId);
+    await this.validateUnidad(createDesagoteDto.unidadId);
 
-    try {
-      return await this.prisma.desagote.create({
-        data: {
-          fecha: new Date(createDesagoteDto.fecha),
-          horaInicio: createDesagoteDto.horaInicio,
-          horaFin: createDesagoteDto.horaFin,
-          estado: createDesagoteDto.estado,
-          solicitudId: createDesagoteDto.solicitudId,
-          unidadId: createDesagoteDto.unidadId,
-        },
-      });
-    } catch (error) {
-      // La solicitud o la unidad no existen
-      if (isPrismaForeignKeyError(error)) {
-        throw new BadRequestException(
-          'La solicitud o la unidad indicadas no existen.',
-        );
-      }
-
-      throw error;
-    }
+    return this.prisma.desagote.create({
+      data: {
+        fecha: new Date(createDesagoteDto.fecha),
+        horaInicio: createDesagoteDto.horaInicio,
+        horaFin: createDesagoteDto.horaFin,
+        estado: createDesagoteDto.estado,
+        solicitudId: createDesagoteDto.solicitudId,
+        unidadId: createDesagoteDto.unidadId,
+      },
+    });
   }
 
-  // "include" trae también los datos de las tablas relacionadas
   findAll() {
     return this.prisma.desagote.findMany({
       include: { solicitud: true, unidad: true },
@@ -66,35 +45,55 @@ export class DesagotesService {
   async update(id: number, updateDesagoteDto: UpdateDesagoteDto) {
     await this.findOne(id);
 
-    try {
-      // Si un campo no viene (undefined), Prisma no lo modifica
-      return await this.prisma.desagote.update({
-        where: { id },
-        data: {
-          fecha: updateDesagoteDto.fecha
-            ? new Date(updateDesagoteDto.fecha)
-            : undefined,
-          horaInicio: updateDesagoteDto.horaInicio,
-          horaFin: updateDesagoteDto.horaFin,
-          estado: updateDesagoteDto.estado,
-          solicitudId: updateDesagoteDto.solicitudId,
-          unidadId: updateDesagoteDto.unidadId,
-        },
-      });
-    } catch (error) {
-      if (isPrismaForeignKeyError(error)) {
-        throw new BadRequestException(
-          'La solicitud o la unidad indicadas no existen.',
-        );
-      }
-
-      throw error;
+    if (updateDesagoteDto.solicitudId) {
+      await this.validateSolicitud(updateDesagoteDto.solicitudId);
     }
+
+    if (updateDesagoteDto.unidadId) {
+      await this.validateUnidad(updateDesagoteDto.unidadId);
+    }
+
+    // Si un campo no viene (undefined), Prisma no lo modifica
+    return this.prisma.desagote.update({
+      where: { id },
+      data: {
+        fecha: updateDesagoteDto.fecha
+          ? new Date(updateDesagoteDto.fecha)
+          : undefined,
+        horaInicio: updateDesagoteDto.horaInicio,
+        horaFin: updateDesagoteDto.horaFin,
+        estado: updateDesagoteDto.estado,
+        solicitudId: updateDesagoteDto.solicitudId,
+        unidadId: updateDesagoteDto.unidadId,
+      },
+    });
   }
 
   async remove(id: number) {
     await this.findOne(id);
 
     return this.prisma.desagote.delete({ where: { id } });
+  }
+
+  private async validateSolicitud(solicitudId: number) {
+    const solicitud = await this.prisma.solicitud.findUnique({
+      where: { id: solicitudId },
+    });
+
+    if (!solicitud) {
+      throw new NotFoundException(
+        `No existe una solicitud con id ${solicitudId}.`,
+      );
+    }
+  }
+
+  private async validateUnidad(unidadId: number) {
+    const unidad = await this.prisma.unidad.findUnique({
+      where: { id: unidadId },
+    });
+
+    if (!unidad) {
+      throw new NotFoundException(`No existe una unidad con id ${unidadId}.`);
+    }
   }
 }

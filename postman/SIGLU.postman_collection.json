@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "SIGLU Backend",
-    "description": "Pedidos para probar la API de SIGLU. Antes: correr la migración y el seed (carga roles, áreas, marcas/modelos, estados y tipos). Probar en orden: 0. Catálogos (para ver los ids), 1. Auth, 2. Users, 3. Unidades, 4. Imbornales, 5. Solicitudes, 6. Inspecciones, 7. Desagotes. Los ids que se crean se guardan solos. Los ids de catálogos de los ejemplos son los que deja el seed en una base nueva. Dejar los 'Borrar' para el final.",
+    "description": "Pedidos para probar la API de SIGLU. Antes: correr la migración. Probar en orden: 1. Auth, 2. Users, 3. Unidades, 4. Imbornales, 5. Solicitudes, 6. Inspecciones, 7. Desagotes. Los ids que se crean se guardan solos. Dejar los 'Borrar' para el final.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -40,51 +40,6 @@
   ],
   "item": [
     {
-      "name": "0. Catálogos",
-      "item": [
-        {
-          "name": "Roles",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": "{{baseUrl}}/catalogos/roles"
-          }
-        },
-        {
-          "name": "Áreas",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": "{{baseUrl}}/catalogos/areas"
-          }
-        },
-        {
-          "name": "Marcas y modelos",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": "{{baseUrl}}/catalogos/marcas"
-          }
-        },
-        {
-          "name": "Estados",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": "{{baseUrl}}/catalogos/estados"
-          }
-        },
-        {
-          "name": "Tipos",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": "{{baseUrl}}/catalogos/tipos"
-          }
-        }
-      ]
-    },
-    {
       "name": "1. Auth",
       "item": [
         {
@@ -100,7 +55,7 @@
             "url": "{{baseUrl}}/auth/register",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"cuil\": \"20123456789\",\n  \"legajo\": \"L-001\",\n  \"email\": \"juan.perez@siglu.com\",\n  \"password\": \"Clave1234\",\n  \"rolId\": 1,\n  \"areaId\": 1\n}",
+              "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"cuil\": \"20123456789\",\n  \"legajo\": \"L-001\",\n  \"area\": \"Inspecciones\",\n  \"email\": \"juan.perez@siglu.com\",\n  \"password\": \"Clave1234\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -192,7 +147,7 @@
             "url": "{{baseUrl}}/users/{{userId}}",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"areaId\": 2\n}",
+              "raw": "{\n  \"area\": \"Desagotes\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -227,7 +182,7 @@
             "url": "{{baseUrl}}/unidades",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"interno\": 12,\n  \"dominio\": \"AB123CD\",\n  \"kilometraje\": 0,\n  \"modeloId\": 1,\n  \"tipoId\": 1,\n  \"estadoId\": 1\n}",
+              "raw": "{\n  \"interno\": 12,\n  \"marca\": \"Ford\",\n  \"modelo\": \"Cargo 1722\",\n  \"dominio\": \"AB123CD\",\n  \"tipo\": \"Desagotador\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -278,7 +233,7 @@
             "url": "{{baseUrl}}/unidades/{{unidadId}}",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"kilometraje\": 15000,\n  \"estadoId\": 2\n}",
+              "raw": "{\n  \"kilometraje\": 15000,\n  \"estado\": \"En taller\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -313,7 +268,7 @@
             "url": "{{baseUrl}}/imbornales",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"ubicacion\": \"San Martín y Belgrano\",\n  \"tipoId\": 3\n}",
+              "raw": "{\n  \"ubicacion\": \"San Martín y Belgrano\",\n  \"tipo\": \"Calzada\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -399,7 +354,7 @@
             "url": "{{baseUrl}}/solicitudes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"ubicacion\": \"San Martín 1234\",\n  \"descripcion\": \"Imbornal tapado, se inunda la esquina cuando llueve\",\n  \"prioridad\": \"Alta\",\n  \"telefonoContacto\": \"3624000000\",\n  \"tipoId\": 5,\n  \"estadoId\": 4,\n  \"imbornalId\": {{imbornalId}},\n  \"userId\": {{userId}}\n}",
+              "raw": "{\n  \"tipo\": \"Reclamo\",\n  \"ubicacion\": \"San Martín 1234\",\n  \"descripcion\": \"Imbornal tapado, se inunda la esquina cuando llueve\",\n  \"prioridad\": \"Alta\",\n  \"telefonoContacto\": \"3624000000\",\n  \"imbornalId\": {{imbornalId}},\n  \"userId\": {{userId}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -450,7 +405,7 @@
             "url": "{{baseUrl}}/solicitudes/{{solicitudId}}",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"estadoId\": 5\n}",
+              "raw": "{\n  \"estado\": \"En proceso\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -485,7 +440,7 @@
             "url": "{{baseUrl}}/inspecciones",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"numeroActa\": \"ACTA-0001\",\n  \"fecha\": \"2026-11-21\",\n  \"norma\": \"Ordenanza 1234\",\n  \"articulo\": \"Art. 5\",\n  \"observaciones\": \"Se constata obstrucción del imbornal\",\n  \"estadoId\": 7,\n  \"solicitudId\": {{solicitudId}},\n  \"inspectorId\": {{userId}}\n}",
+              "raw": "{\n  \"numeroActa\": \"ACTA-0001\",\n  \"fecha\": \"2026-11-21\",\n  \"norma\": \"Ordenanza 1234\",\n  \"articulo\": \"Art. 5\",\n  \"observaciones\": \"Se constata obstrucción del imbornal\",\n  \"solicitudId\": {{solicitudId}},\n  \"inspectorId\": {{userId}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -536,7 +491,7 @@
             "url": "{{baseUrl}}/inspecciones/{{inspeccionId}}",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"estadoId\": 8\n}",
+              "raw": "{\n  \"estado\": \"Cerrada\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -571,7 +526,7 @@
             "url": "{{baseUrl}}/desagotes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"fecha\": \"2026-11-25\",\n  \"horaInicio\": \"08:00\",\n  \"horaFin\": \"10:30\",\n  \"estadoId\": 9,\n  \"solicitudId\": {{solicitudId}},\n  \"unidadId\": {{unidadId}}\n}",
+              "raw": "{\n  \"fecha\": \"2026-11-25\",\n  \"horaInicio\": \"08:00\",\n  \"horaFin\": \"10:30\",\n  \"solicitudId\": {{solicitudId}},\n  \"unidadId\": {{unidadId}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -622,7 +577,7 @@
             "url": "{{baseUrl}}/desagotes/{{desagoteId}}",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"estadoId\": 10\n}",
+              "raw": "{\n  \"estado\": \"Realizado\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -665,7 +620,7 @@
             "url": "{{baseUrl}}/unidades",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"interno\": \"doce\",\n  \"dominio\": \"\"\n}",
+              "raw": "{\n  \"interno\": \"doce\",\n  \"marca\": \"\",\n  \"dominio\": \"AB123CD\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -675,7 +630,7 @@
           }
         },
         {
-          "name": "400 - estado que no existe",
+          "name": "400 - solicitud que no existe",
           "request": {
             "method": "POST",
             "header": [
@@ -684,10 +639,10 @@
                 "value": "application/json"
               }
             ],
-            "url": "{{baseUrl}}/unidades",
+            "url": "{{baseUrl}}/desagotes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"interno\": 99,\n  \"dominio\": \"ZZ999ZZ\",\n  \"modeloId\": 1,\n  \"tipoId\": 1,\n  \"estadoId\": 999\n}",
+              "raw": "{\n  \"fecha\": \"2026-11-25\",\n  \"horaInicio\": \"08:00\",\n  \"horaFin\": \"10:30\",\n  \"solicitudId\": 99999,\n  \"unidadId\": {{unidadId}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -717,7 +672,7 @@
             "url": "{{baseUrl}}/unidades",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"interno\": 12,\n  \"dominio\": \"AB123CD\",\n  \"modeloId\": 1,\n  \"tipoId\": 1,\n  \"estadoId\": 1\n}",
+              "raw": "{\n  \"interno\": 12,\n  \"marca\": \"Ford\",\n  \"modelo\": \"Cargo 1722\",\n  \"dominio\": \"AB123CD\",\n  \"tipo\": \"Desagotador\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -769,7 +724,7 @@
             "url": "{{baseUrl}}/desagotes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"fecha\": \"2026-11-25\",\n  \"horaInicio\": \"10:00\",\n  \"horaFin\": \"08:00\",\n  \"estadoId\": 9,\n  \"solicitudId\": {{solicitudId}},\n  \"unidadId\": {{unidadId}}\n}",
+              "raw": "{\n  \"fecha\": \"2026-11-25\",\n  \"horaInicio\": \"10:00\",\n  \"horaFin\": \"08:00\",\n  \"solicitudId\": {{solicitudId}},\n  \"unidadId\": {{unidadId}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
