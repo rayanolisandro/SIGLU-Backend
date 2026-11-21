@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ImbornalesService } from './imbornales.service.js';
 import { CreateImbornaleDto } from './dto/create-imbornale.dto.js';
 import { UpdateImbornaleDto } from './dto/update-imbornale.dto.js';
@@ -18,17 +27,20 @@ export class ImbornalesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.imbornalesService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.imbornalesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateImbornaleDto: UpdateImbornaleDto) {
-    return this.imbornalesService.update(+id, updateImbornaleDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateImbornaleDto: UpdateImbornaleDto,
+  ) {
+    return this.imbornalesService.update(id, updateImbornaleDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.imbornalesService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.imbornalesService.remove(id);
   }
 }

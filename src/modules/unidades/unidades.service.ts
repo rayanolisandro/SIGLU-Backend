@@ -1,26 +1,82 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service.js';
+import {
+  isPrismaForeignKeyError,
+  isPrismaUniqueConstraintError,
+} from '../prisma/prisma-error.util.js';
 import { CreateUnidadeDto } from './dto/create-unidade.dto.js';
 import { UpdateUnidadeDto } from './dto/update-unidade.dto.js';
 
 @Injectable()
 export class UnidadesService {
-  create(createUnidadeDto: CreateUnidadeDto) {
-    return 'This action adds a new unidade';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createUnidadeDto: CreateUnidadeDto) {
+    try {
+      return await this.prisma.unidad.create({ data: createUnidadeDto });
+    } catch (error) {
+      // El interno y el dominio son únicos: si ya existen, Prisma tira error
+      if (isPrismaUniqueConstraintError(error)) {
+        throw new ConflictException(
+          'Ya existe una unidad con ese número de interno o dominio.',
+        );
+      }
+
+      throw error;
+    }
   }
 
   findAll() {
-    return `This action returns all unidades`;
+    return this.prisma.unidad.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} unidade`;
+  async findOne(id: number) {
+    const unidad = await this.prisma.unidad.findUnique({ where: { id } });
+
+    if (!unidad) {
+      throw new NotFoundException(`No existe una unidad con id ${id}.`);
+    }
+
+    return unidad;
   }
 
-  update(id: number, updateUnidadeDto: UpdateUnidadeDto) {
-    return `This action updates a #${id} unidade`;
+  async update(id: number, updateUnidadeDto: UpdateUnidadeDto) {
+    await this.findOne(id);
+
+    try {
+      return await this.prisma.unidad.update({
+        where: { id },
+        data: updateUnidadeDto,
+      });
+    } catch (error) {
+      if (isPrismaUniqueConstraintError(error)) {
+        throw new ConflictException(
+          'Ya existe una unidad con ese número de interno o dominio.',
+        );
+      }
+
+      throw error;
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} unidade`;
+  async remove(id: number) {
+    await this.findOne(id);
+
+    try {
+      return await this.prisma.unidad.delete({ where: { id } });
+    } catch (error) {
+      // No se puede borrar si tiene desagotes cargados
+      if (isPrismaForeignKeyError(error)) {
+        throw new ConflictException(
+          'No se puede borrar la unidad porque tiene desagotes asociados.',
+        );
+      }
+
+      throw error;
+    }
   }
 }

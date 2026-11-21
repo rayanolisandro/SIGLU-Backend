@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { UnidadesService } from './unidades.service.js';
 import { CreateUnidadeDto } from './dto/create-unidade.dto.js';
 import { UpdateUnidadeDto } from './dto/update-unidade.dto.js';
@@ -18,17 +27,20 @@ export class UnidadesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.unidadesService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.unidadesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUnidadeDto: UpdateUnidadeDto) {
-    return this.unidadesService.update(+id, updateUnidadeDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUnidadeDto: UpdateUnidadeDto,
+  ) {
+    return this.unidadesService.update(id, updateUnidadeDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.unidadesService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.unidadesService.remove(id);
   }
 }
