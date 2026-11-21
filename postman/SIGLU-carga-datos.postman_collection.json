@@ -1,0 +1,1065 @@
+{
+  "info": {
+    "name": "SIGLU - Carga de datos",
+    "description": "Carga 5 registros en cada tabla, en orden. Correr con el Runner una sola vez sobre una base vacía (si se corre de nuevo, los datos únicos dan 409).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Usuarios",
+      "item": [
+        {
+          "name": "Usuario 1 - Juan Pérez",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('u1', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"cuil\": \"20301234561\",\n  \"legajo\": \"L-101\",\n  \"area\": \"Inspecciones\",\n  \"email\": \"juan.perez@siglu.com\",\n  \"password\": \"Clave1234\",\n  \"rol\": \"inspector\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Usuario 2 - María Gómez",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('u2', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"María\",\n  \"apellido\": \"Gómez\",\n  \"cuil\": \"27302345672\",\n  \"legajo\": \"L-102\",\n  \"area\": \"Inspecciones\",\n  \"email\": \"maria.gomez@siglu.com\",\n  \"password\": \"Clave1234\",\n  \"rol\": \"inspector\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Usuario 3 - Carlos Rodríguez",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('u3', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carlos\",\n  \"apellido\": \"Rodríguez\",\n  \"cuil\": \"20303456783\",\n  \"legajo\": \"L-103\",\n  \"area\": \"Desagotes\",\n  \"email\": \"carlos.rodriguez@siglu.com\",\n  \"password\": \"Clave1234\",\n  \"rol\": \"inspector\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Usuario 4 - Laura Fernández",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('u4', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Laura\",\n  \"apellido\": \"Fernández\",\n  \"cuil\": \"27304567894\",\n  \"legajo\": \"L-104\",\n  \"area\": \"Administración\",\n  \"email\": \"laura.fernandez@siglu.com\",\n  \"password\": \"Clave1234\",\n  \"rol\": \"administrador\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Usuario 5 - Diego Martínez",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('u5', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Diego\",\n  \"apellido\": \"Martínez\",\n  \"cuil\": \"20305678905\",\n  \"legajo\": \"L-105\",\n  \"area\": \"Desagotes\",\n  \"email\": \"diego.martinez@siglu.com\",\n  \"password\": \"Clave1234\",\n  \"rol\": \"inspector\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Unidades",
+      "item": [
+        {
+          "name": "Unidad 1 - Interno 10",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('un1', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/unidades",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interno\": 10,\n  \"marca\": \"Ford\",\n  \"modelo\": \"Cargo 1722\",\n  \"dominio\": \"AB123CD\",\n  \"tipo\": \"Desagotador\",\n  \"estado\": \"Operativa\",\n  \"kilometraje\": 45200,\n  \"proximoServiceKm\": 50000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Unidad 2 - Interno 11",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('un2', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/unidades",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interno\": 11,\n  \"marca\": \"Mercedes-Benz\",\n  \"modelo\": \"Atego 1726\",\n  \"dominio\": \"AC456EF\",\n  \"tipo\": \"Desagotador\",\n  \"estado\": \"Operativa\",\n  \"kilometraje\": 31800,\n  \"proximoServiceKm\": 40000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Unidad 3 - Interno 12",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('un3', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/unidades",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interno\": 12,\n  \"marca\": \"Iveco\",\n  \"modelo\": \"Tector 170E28\",\n  \"dominio\": \"AD789GH\",\n  \"tipo\": \"Desagotador\",\n  \"estado\": \"En taller\",\n  \"kilometraje\": 78900,\n  \"proximoServiceKm\": 80000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Unidad 4 - Interno 13",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('un4', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/unidades",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interno\": 13,\n  \"marca\": \"Toyota\",\n  \"modelo\": \"Hilux\",\n  \"dominio\": \"AE012IJ\",\n  \"tipo\": \"Camioneta\",\n  \"estado\": \"Operativa\",\n  \"kilometraje\": 22000,\n  \"proximoServiceKm\": 30000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Unidad 5 - Interno 14",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('un5', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/unidades",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interno\": 14,\n  \"marca\": \"Volkswagen\",\n  \"modelo\": \"Amarok\",\n  \"dominio\": \"AF345KL\",\n  \"tipo\": \"Camioneta\",\n  \"estado\": \"Operativa\",\n  \"kilometraje\": 15400,\n  \"proximoServiceKm\": 20000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Imbornales",
+      "item": [
+        {
+          "name": "Imbornal 1 - San Martín y Belgrano",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('im1', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/imbornales",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ubicacion\": \"San Martín y Belgrano\",\n  \"tipo\": \"Calzada\",\n  \"limpieza\": \"Sin revisar\",\n  \"estructura\": \"Sin revisar\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Imbornal 2 - Av. Sarmiento 1500",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('im2', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/imbornales",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ubicacion\": \"Av. Sarmiento 1500\",\n  \"tipo\": \"Calzada\",\n  \"limpieza\": \"Sucio\",\n  \"estructura\": \"Buena\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Imbornal 3 - Mitre y Rivadavia",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('im3', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/imbornales",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ubicacion\": \"Mitre y Rivadavia\",\n  \"tipo\": \"Vereda\",\n  \"limpieza\": \"Limpio\",\n  \"estructura\": \"Buena\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Imbornal 4 - Av. Alberdi 850",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('im4', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/imbornales",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ubicacion\": \"Av. Alberdi 850\",\n  \"tipo\": \"Calzada\",\n  \"limpieza\": \"Obstruido\",\n  \"estructura\": \"Dañada\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Imbornal 5 - Corrientes y Moreno",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('im5', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/imbornales",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ubicacion\": \"Corrientes y Moreno\",\n  \"tipo\": \"Vereda\",\n  \"limpieza\": \"Sucio\",\n  \"estructura\": \"Regular\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Solicitudes",
+      "item": [
+        {
+          "name": "Solicitud 1 - San Martín y Belgrano",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('s1', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/solicitudes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"Reclamo\",\n  \"ubicacion\": \"San Martín y Belgrano\",\n  \"descripcion\": \"Imbornal tapado, se inunda la esquina cuando llueve\",\n  \"prioridad\": \"Alta\",\n  \"telefonoContacto\": \"3815111111\",\n  \"estado\": \"Pendiente\",\n  \"fecha\": \"2026-11-10\",\n  \"imbornalId\": {{im1}},\n  \"userId\": {{u1}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Solicitud 2 - Av. Sarmiento 1500",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('s2', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/solicitudes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"Reclamo\",\n  \"ubicacion\": \"Av. Sarmiento 1500\",\n  \"descripcion\": \"Olor fuerte que sale de la boca de tormenta\",\n  \"prioridad\": \"Media\",\n  \"telefonoContacto\": \"3815222222\",\n  \"estado\": \"En proceso\",\n  \"fecha\": \"2026-11-12\",\n  \"imbornalId\": {{im2}},\n  \"userId\": {{u2}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Solicitud 3 - Mitre y Rivadavia",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('s3', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/solicitudes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"Pedido\",\n  \"ubicacion\": \"Mitre y Rivadavia\",\n  \"descripcion\": \"Pedido de limpieza preventiva antes de la temporada de lluvias\",\n  \"prioridad\": \"Baja\",\n  \"estado\": \"Pendiente\",\n  \"fecha\": \"2026-11-14\",\n  \"imbornalId\": {{im3}},\n  \"userId\": {{u1}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Solicitud 4 - Av. Alberdi 850",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('s4', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/solicitudes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"Reclamo\",\n  \"ubicacion\": \"Av. Alberdi 850\",\n  \"descripcion\": \"Rejilla rota, es peligroso para los peatones\",\n  \"prioridad\": \"Alta\",\n  \"telefonoContacto\": \"3815333333\",\n  \"estado\": \"En proceso\",\n  \"fecha\": \"2026-11-15\",\n  \"imbornalId\": {{im4}},\n  \"userId\": {{u4}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Solicitud 5 - Corrientes y Moreno",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('s5', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/solicitudes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"Pedido\",\n  \"ubicacion\": \"Corrientes y Moreno\",\n  \"descripcion\": \"Desagote de pozo ciego en vivienda particular\",\n  \"prioridad\": \"Media\",\n  \"telefonoContacto\": \"3815444444\",\n  \"estado\": \"Pendiente\",\n  \"fecha\": \"2026-11-18\",\n  \"imbornalId\": {{im5}},\n  \"userId\": {{u2}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Inspecciones",
+      "item": [
+        {
+          "name": "Inspección 1 - ACTA-0001",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('insp1', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/inspecciones",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroActa\": \"ACTA-0001\",\n  \"fecha\": \"2026-11-11\",\n  \"norma\": \"Ordenanza 1234\",\n  \"articulo\": \"Art. 5\",\n  \"observaciones\": \"Se constata obstrucción total del imbornal\",\n  \"documento\": \"acta-0001.pdf\",\n  \"estado\": \"Registrada\",\n  \"solicitudId\": {{s1}},\n  \"inspectorId\": {{u1}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Inspección 2 - ACTA-0002",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('insp2', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/inspecciones",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroActa\": \"ACTA-0002\",\n  \"fecha\": \"2026-11-13\",\n  \"norma\": \"Ordenanza 1234\",\n  \"articulo\": \"Art. 7\",\n  \"observaciones\": \"Se detectan residuos acumulados en la boca de tormenta\",\n  \"estado\": \"Registrada\",\n  \"solicitudId\": {{s2}},\n  \"inspectorId\": {{u2}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Inspección 3 - ACTA-0003",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('insp3', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/inspecciones",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroActa\": \"ACTA-0003\",\n  \"fecha\": \"2026-11-15\",\n  \"norma\": \"Ordenanza 2050\",\n  \"articulo\": \"Art. 3\",\n  \"observaciones\": \"Imbornal en buen estado, se recomienda limpieza preventiva\",\n  \"estado\": \"Cerrada\",\n  \"solicitudId\": {{s3}},\n  \"inspectorId\": {{u1}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Inspección 4 - ACTA-0004",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('insp4', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/inspecciones",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroActa\": \"ACTA-0004\",\n  \"fecha\": \"2026-11-16\",\n  \"norma\": \"Ordenanza 1234\",\n  \"articulo\": \"Art. 9\",\n  \"observaciones\": \"Rejilla rota con riesgo para peatones, se solicita reparación\",\n  \"documento\": \"acta-0004.pdf\",\n  \"estado\": \"Registrada\",\n  \"solicitudId\": {{s4}},\n  \"inspectorId\": {{u2}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Inspección 5 - ACTA-0005",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('insp5', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/inspecciones",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroActa\": \"ACTA-0005\",\n  \"fecha\": \"2026-11-19\",\n  \"norma\": \"Ordenanza 3100\",\n  \"articulo\": \"Art. 2\",\n  \"observaciones\": \"Se verifica pozo ciego desbordado\",\n  \"estado\": \"Registrada\",\n  \"solicitudId\": {{s5}},\n  \"inspectorId\": {{u1}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Desagotes",
+      "item": [
+        {
+          "name": "Desagote 1 - 2026-11-20",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('d1', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/desagotes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2026-11-20\",\n  \"horaInicio\": \"08:00\",\n  \"horaFin\": \"10:00\",\n  \"estado\": \"Realizado\",\n  \"solicitudId\": {{s1}},\n  \"unidadId\": {{un1}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Desagote 2 - 2026-11-21",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('d2', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/desagotes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2026-11-21\",\n  \"horaInicio\": \"09:30\",\n  \"horaFin\": \"11:30\",\n  \"estado\": \"Programado\",\n  \"solicitudId\": {{s2}},\n  \"unidadId\": {{un2}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Desagote 3 - 2026-11-22",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('d3', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/desagotes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2026-11-22\",\n  \"horaInicio\": \"07:00\",\n  \"horaFin\": \"08:30\",\n  \"estado\": \"Programado\",\n  \"solicitudId\": {{s3}},\n  \"unidadId\": {{un1}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Desagote 4 - 2026-11-24",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('d4', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/desagotes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2026-11-24\",\n  \"horaInicio\": \"10:00\",\n  \"horaFin\": \"12:00\",\n  \"estado\": \"Programado\",\n  \"solicitudId\": {{s4}},\n  \"unidadId\": {{un2}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Desagote 5 - 2026-11-25",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Se creó (201)', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('d5', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/desagotes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2026-11-25\",\n  \"horaInicio\": \"14:00\",\n  \"horaFin\": \"16:30\",\n  \"estado\": \"Programado\",\n  \"solicitudId\": {{s5}},\n  \"unidadId\": {{un3}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

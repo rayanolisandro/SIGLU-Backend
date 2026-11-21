@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           Int          @id @default(autoincrement())
+  nombre       String       @db.VarChar(50)
+  apellido     String       @db.VarChar(50)
+  cuil         String       @unique @db.Char(11)
+  legajo       String       @unique @db.VarChar(20)
+  area         String       @db.VarChar(40)
+  email        String       @unique @db.VarChar(100)
+  password     String       @db.VarChar(100)
+  rol          String       @default("inspector") @db.VarChar(20)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  solicitudes  Solicitud[]
+  inspecciones Inspeccion[]
+}
+
+model Unidad {
+  id               Int        @id @default(autoincrement())
+  interno          Int        @unique
+  marca            String     @db.VarChar(40)
+  modelo           String     @db.VarChar(40)
+  dominio          String     @unique @db.VarChar(10)
+  tipo             String     @db.VarChar(20)
+  estado           String     @default("Operativa") @db.VarChar(20)
+  kilometraje      Int        @default(0)
+  proximoServiceKm Int        @default(0)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  desagotes        Desagote[]
+}
+
+model Imbornal {
+  id          Int         @id @default(autoincrement())
+  ubicacion   String      @db.VarChar(160)
+  tipo        String      @db.VarChar(20)
+  limpieza    String      @default("Sin revisar") @db.VarChar(20)
+  estructura  String      @default("Sin revisar") @db.VarChar(20)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  solicitudes Solicitud[]
+}
+
+model Solicitud {
+  id               Int          @id @default(autoincrement())
+  tipo             String       @db.VarChar(20)
+  ubicacion        String       @db.VarChar(160)
+  descripcion      String       @db.VarChar(1000)
+  prioridad        String       @db.VarChar(10)
+  telefonoContacto String?      @db.VarChar(30)
+  estado           String       @default("Pendiente") @db.VarChar(20)
+  fecha            DateTime     @default(now()) @db.Date
+  imbornalId       Int?
+  userId           Int
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  imbornal         Imbornal?    @relation(fields: [imbornalId], references: [id])
+  user             User         @relation(fields: [userId], references: [id])
+  inspecciones     Inspeccion[]
+  desagotes        Desagote[]
+}
+
+model Inspeccion {
+  id            Int       @id @default(autoincrement())
+  numeroActa    String    @unique @db.VarChar(30)
+  fecha         DateTime  @db.Date
+  norma         String    @db.VarChar(100)
+  articulo      String    @db.VarChar(50)
+  observaciones String    @db.Text
+  documento     String?   @db.VarChar(100)
+  estado        String    @default("Registrada") @db.VarChar(30)
+  solicitudId   Int
+  inspectorId   Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  solicitud     Solicitud @relation(fields: [solicitudId], references: [id])
+  inspector     User      @relation(fields: [inspectorId], references: [id])
+}
+
+model Desagote {
+  id          Int       @id @default(autoincrement())
+  fecha       DateTime  @db.Date
+  horaInicio  String    @db.VarChar(8)
+  horaFin     String    @db.VarChar(8)
+  estado      String    @default("Programado") @db.VarChar(20)
+  solicitudId Int
+  unidadId    Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  solicitud   Solicitud @relation(fields: [solicitudId], references: [id])
+  unidad      Unidad    @relation(fields: [unidadId], references: [id])
+}

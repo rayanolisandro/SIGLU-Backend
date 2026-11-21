@@ -1,24 +1,61 @@
-import { IsNotEmpty, IsString, IsNumber, IsDate, MinLength, MaxLength, IsPositive, MinDate } from 'class-validator';
+import {
+  IsDateString,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  Min,
+} from 'class-validator';
 
 export class CreateSolicitudeDto {
-  @IsNotEmpty({ message: 'El título es obligatorio' })
-  @IsString({ message: 'El título debe ser una cadena de texto' })
-  @MinLength(3, { message: 'El título debe tener al menos 3 caracteres' })
-  @MaxLength(100, { message: 'El título no puede superar los 100 caracteres' })
-  nombre: string;
+  @IsString({ message: 'El tipo tiene que ser texto' })
+  @IsNotEmpty({ message: 'Falta indicar el tipo de solicitud' })
+  @MaxLength(20, { message: 'El tipo no puede pasar de 20 caracteres' })
+  tipo: string;
 
-  @IsNotEmpty({ message: 'La descripción es obligatoria' })
-  @IsString({ message: 'La descripción debe ser una cadena de texto' })
-  @MaxLength(500, { message: 'La descripción no puede superar los 500 caracteres' })
+  @IsString({ message: 'La ubicación tiene que ser texto' })
+  @IsNotEmpty({ message: 'Falta ingresar la ubicación' })
+  @MaxLength(160, { message: 'La ubicación no puede pasar de 160 caracteres' })
+  ubicacion: string;
+
+  @IsString({ message: 'La descripción tiene que ser texto' })
+  @IsNotEmpty({ message: 'Falta escribir la descripción' })
+  @MaxLength(1000, {
+    message: 'La descripción no puede pasar de 1000 caracteres',
+  })
   descripcion: string;
 
-  @IsNotEmpty({ message: 'El monto es obligatorio' })
-  @IsNumber({ maxDecimalPlaces: 2 }, { message: 'El monto debe ser un número con hasta 2 decimales' })
-  @IsPositive({ message: 'El monto debe ser mayor a 0' })
-  numero: number;
+  @IsString({ message: 'La prioridad tiene que ser texto' })
+  @IsNotEmpty({ message: 'Falta indicar la prioridad' })
+  @MaxLength(10, { message: 'La prioridad no puede pasar de 10 caracteres' })
+  prioridad: string;
 
-  @IsNotEmpty({ message: 'La fecha es obligatoria' })
-  @IsDate({ message: 'La fecha debe ser una fecha válida' })
-  @MinDate(new Date(), { message: 'La fecha no puede ser anterior a hoy' })
-  fecha: Date;
+  @IsOptional()
+  @IsString({ message: 'El teléfono de contacto tiene que ser texto' })
+  @MaxLength(30, {
+    message: 'El teléfono de contacto no puede pasar de 30 caracteres',
+  })
+  telefonoContacto?: string;
+
+  @IsOptional()
+  @IsString({ message: 'El estado tiene que ser texto' })
+  @MaxLength(20, { message: 'El estado no puede pasar de 20 caracteres' })
+  estado?: string;
+
+  @IsOptional()
+  @IsDateString(
+    {},
+    { message: 'La fecha tiene que tener formato válido (ej: 2026-11-20)' },
+  )
+  fecha?: string;
+
+  @IsOptional()
+  @IsInt({ message: 'Debe seleccionar un imbornal válido' })
+  @Min(1, { message: 'El id del imbornal tiene que ser mayor a 0' })
+  imbornalId?: number;
+
+  @IsInt({ message: 'Debe indicar un usuario válido' })
+  @Min(1, { message: 'El id del usuario tiene que ser mayor a 0' })
+  userId: number;
 }

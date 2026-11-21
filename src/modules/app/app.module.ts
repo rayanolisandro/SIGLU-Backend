@@ -1,17 +1,25 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
-import { UsersModule } from '../users/users.module';
-import { AuthModule } from '../auth/auth.module';
-import { SolicitudesModule} from '../solicitudes/solicitudes.module';
+import { AppController } from './app.controller.js';
+import { AppService } from './app.service.js';
+import { PrismaModule } from '../prisma/prisma.module.js';
+import { UsersModule } from '../users/users.module.js';
+import { AuthModule } from '../auth/auth.module.js';
+import { SolicitudesModule } from '../solicitudes/solicitudes.module.js';
+import { UnidadesModule } from '../unidades/unidades.module.js';
+import { ImbornalesModule } from '../imbornales/imbornales.module.js';
+import { InspeccionesModule } from '../inspecciones/inspecciones.module.js';
+import { DesagotesModule } from '../desagotes/desagotes.module.js';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    PrismaModule,
     UsersModule,
     AuthModule,
-    SolicitudesModule
+    SolicitudesModule,
+    UnidadesModule,
+    ImbornalesModule,
+    InspeccionesModule,
+    DesagotesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
