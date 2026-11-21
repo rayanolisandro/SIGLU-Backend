@@ -1,11 +1,9 @@
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { isPrismaForeignKeyError } from '../prisma/prisma-error.util.js';
 import { CreateSolicitudeDto } from './dto/create-solicitude.dto.js';
 import { UpdateSolicitudeDto } from './dto/update-solicitude.dto.js';
 
@@ -14,36 +12,30 @@ export class SolicitudesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createSolicitudeDto: CreateSolicitudeDto) {
-    try {
-      return await this.prisma.solicitud.create({
-        data: {
-          ubicacion: createSolicitudeDto.ubicacion,
-          descripcion: createSolicitudeDto.descripcion,
-          prioridad: createSolicitudeDto.prioridad,
-          telefonoContacto: createSolicitudeDto.telefonoContacto,
-          // Si no mandan fecha, la base de datos pone la de hoy
-          fecha: createSolicitudeDto.fecha
-            ? new Date(createSolicitudeDto.fecha)
-            : undefined,
-          tipo: createSolicitudeDto.tipo,
-          estado: createSolicitudeDto.estado,
-          imbornalId: createSolicitudeDto.imbornalId,
-          userId: createSolicitudeDto.userId,
-        },
-      });
-    } catch (error) {
-      // Alguno de los ids relacionados no existe
-      if (isPrismaForeignKeyError(error)) {
-        throw new BadRequestException(
-          'El imbornal o el usuario indicados no existen.',
-        );
-      }
+    await this.validateUsuario(createSolicitudeDto.userId);
 
-      throw error;
+    if (createSolicitudeDto.imbornalId) {
+      await this.validateImbornal(createSolicitudeDto.imbornalId);
     }
+
+    return this.prisma.solicitud.create({
+      data: {
+        tipo: createSolicitudeDto.tipo,
+        ubicacion: createSolicitudeDto.ubicacion,
+        descripcion: createSolicitudeDto.descripcion,
+        prioridad: createSolicitudeDto.prioridad,
+        telefonoContacto: createSolicitudeDto.telefonoContacto,
+        estado: createSolicitudeDto.estado,
+        // Si no mandan fecha, la base de datos pone la de hoy
+        fecha: createSolicitudeDto.fecha
+          ? new Date(createSolicitudeDto.fecha)
+          : undefined,
+        imbornalId: createSolicitudeDto.imbornalId,
+        userId: createSolicitudeDto.userId,
+      },
+    });
   }
 
-  // "include" trae también los datos de las tablas relacionadas
   findAll() {
     return this.prisma.solicitud.findMany({
       include: { imbornal: true },
@@ -66,49 +58,73 @@ export class SolicitudesService {
   async update(id: number, updateSolicitudeDto: UpdateSolicitudeDto) {
     await this.findOne(id);
 
-    try {
-      // Si un campo no viene (undefined), Prisma no lo modifica
-      return await this.prisma.solicitud.update({
-        where: { id },
-        data: {
-          ubicacion: updateSolicitudeDto.ubicacion,
-          descripcion: updateSolicitudeDto.descripcion,
-          prioridad: updateSolicitudeDto.prioridad,
-          telefonoContacto: updateSolicitudeDto.telefonoContacto,
-          fecha: updateSolicitudeDto.fecha
-            ? new Date(updateSolicitudeDto.fecha)
-            : undefined,
-          tipo: updateSolicitudeDto.tipo,
-          estado: updateSolicitudeDto.estado,
-          imbornalId: updateSolicitudeDto.imbornalId,
-          userId: updateSolicitudeDto.userId,
-        },
-      });
-    } catch (error) {
-      if (isPrismaForeignKeyError(error)) {
-        throw new BadRequestException(
-          'El imbornal o el usuario indicados no existen.',
-        );
-      }
-
-      throw error;
+    if (updateSolicitudeDto.userId) {
+      await this.validateUsuario(updateSolicitudeDto.userId);
     }
+
+    if (updateSolicitudeDto.imbornalId) {
+      await this.validateImbornal(updateSolicitudeDto.imbornalId);
+    }
+
+    // Si un campo no viene (undefined), Prisma no lo modifica
+    return this.prisma.solicitud.update({
+      where: { id },
+      data: {
+        tipo: updateSolicitudeDto.tipo,
+        ubicacion: updateSolicitudeDto.ubicacion,
+        descripcion: updateSolicitudeDto.descripcion,
+        prioridad: updateSolicitudeDto.prioridad,
+        telefonoContacto: updateSolicitudeDto.telefonoContacto,
+        estado: updateSolicitudeDto.estado,
+        fecha: updateSolicitudeDto.fecha
+          ? new Date(updateSolicitudeDto.fecha)
+          : undefined,
+        imbornalId: updateSolicitudeDto.imbornalId,
+        userId: updateSolicitudeDto.userId,
+      },
+    });
   }
 
   async remove(id: number) {
     await this.findOne(id);
+    await this.validateSinRegistrosAsociados(id);
 
-    try {
-      return await this.prisma.solicitud.delete({ where: { id } });
-    } catch (error) {
-      // No se puede borrar si tiene inspecciones o desagotes cargados
-      if (isPrismaForeignKeyError(error)) {
-        throw new ConflictException(
-          'No se puede borrar la solicitud porque tiene inspecciones o desagotes asociados.',
-        );
-      }
+    return this.prisma.solicitud.delete({ where: { id } });
+  }
 
-      throw error;
+  private async validateUsuario(userId: number) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      throw new NotFoundException(`No existe un usuario con id ${userId}.`);
+    }
+  }
+
+  private async validateImbornal(imbornalId: number) {
+    const imbornal = await this.prisma.imbornal.findUnique({
+      where: { id: imbornalId },
+    });
+
+    if (!imbornal) {
+      throw new NotFoundException(
+        `No existe un imbornal con id ${imbornalId}.`,
+      );
+    }
+  }
+
+  // No se puede borrar una solicitud que tiene inspecciones o desagotes
+  private async validateSinRegistrosAsociados(solicitudId: number) {
+    const inspecciones = await this.prisma.inspeccion.count({
+      where: { solicitudId },
+    });
+    const desagotes = await this.prisma.desagote.count({
+      where: { solicitudId },
+    });
+
+    if (inspecciones > 0 || desagotes > 0) {
+      throw new ConflictException(
+        'No se puede borrar la solicitud porque tiene inspecciones o desagotes asociados.',
+      );
     }
   }
 }

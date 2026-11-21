@@ -4,10 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
-import {
-  isPrismaForeignKeyError,
-  isPrismaUniqueConstraintError,
-} from '../prisma/prisma-error.util.js';
+import { isPrismaUniqueConstraintError } from '../prisma/prisma-error.util.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 
 @Injectable()
@@ -91,21 +88,27 @@ export class UsersService {
 
   async remove(id: number) {
     await this.findOne(id);
+    await this.validateSinRegistrosAsociados(id);
 
-    try {
-      return await this.prisma.user.delete({
-        where: { id },
-        select: { id: true, nombre: true, apellido: true, email: true },
-      });
-    } catch (error) {
-      // No se puede borrar si tiene solicitudes o inspecciones cargadas
-      if (isPrismaForeignKeyError(error)) {
-        throw new ConflictException(
-          'No se puede borrar el usuario porque tiene solicitudes o inspecciones asociadas.',
-        );
-      }
+    return this.prisma.user.delete({
+      where: { id },
+      select: { id: true, nombre: true, apellido: true, email: true },
+    });
+  }
 
-      throw error;
+  // No se puede borrar un usuario que cargó solicitudes o hizo inspecciones
+  private async validateSinRegistrosAsociados(userId: number) {
+    const solicitudes = await this.prisma.solicitud.count({
+      where: { userId },
+    });
+    const inspecciones = await this.prisma.inspeccion.count({
+      where: { inspectorId: userId },
+    });
+
+    if (solicitudes > 0 || inspecciones > 0) {
+      throw new ConflictException(
+        'No se puede borrar el usuario porque tiene solicitudes o inspecciones asociadas.',
+      );
     }
   }
 }

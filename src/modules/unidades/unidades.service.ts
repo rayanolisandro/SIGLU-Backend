@@ -4,10 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
-import {
-  isPrismaForeignKeyError,
-  isPrismaUniqueConstraintError,
-} from '../prisma/prisma-error.util.js';
+import { isPrismaUniqueConstraintError } from '../prisma/prisma-error.util.js';
 import { CreateUnidadeDto } from './dto/create-unidade.dto.js';
 import { UpdateUnidadeDto } from './dto/update-unidade.dto.js';
 
@@ -65,18 +62,21 @@ export class UnidadesService {
 
   async remove(id: number) {
     await this.findOne(id);
+    await this.validateSinDesagotes(id);
 
-    try {
-      return await this.prisma.unidad.delete({ where: { id } });
-    } catch (error) {
-      // No se puede borrar si tiene desagotes cargados
-      if (isPrismaForeignKeyError(error)) {
-        throw new ConflictException(
-          'No se puede borrar la unidad porque tiene desagotes asociados.',
-        );
-      }
+    return this.prisma.unidad.delete({ where: { id } });
+  }
 
-      throw error;
+  // No se puede borrar una unidad que tiene desagotes cargados
+  private async validateSinDesagotes(unidadId: number) {
+    const desagotes = await this.prisma.desagote.count({
+      where: { unidadId },
+    });
+
+    if (desagotes > 0) {
+      throw new ConflictException(
+        'No se puede borrar la unidad porque tiene desagotes asociados.',
+      );
     }
   }
 }

@@ -1,14 +1,10 @@
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
-import {
-  isPrismaForeignKeyError,
-  isPrismaUniqueConstraintError,
-} from '../prisma/prisma-error.util.js';
+import { isPrismaUniqueConstraintError } from '../prisma/prisma-error.util.js';
 import { CreateInspeccioneDto } from './dto/create-inspeccione.dto.js';
 import { UpdateInspeccioneDto } from './dto/update-inspeccione.dto.js';
 
@@ -17,6 +13,9 @@ export class InspeccionesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createInspeccioneDto: CreateInspeccioneDto) {
+    await this.validateSolicitud(createInspeccioneDto.solicitudId);
+    await this.validateInspector(createInspeccioneDto.inspectorId);
+
     try {
       return await this.prisma.inspeccion.create({
         data: {
@@ -39,18 +38,10 @@ export class InspeccionesService {
         );
       }
 
-      // La solicitud o el inspector no existen
-      if (isPrismaForeignKeyError(error)) {
-        throw new BadRequestException(
-          'La solicitud o el inspector indicados no existen.',
-        );
-      }
-
       throw error;
     }
   }
 
-  // "include" trae también los datos de las tablas relacionadas
   findAll() {
     return this.prisma.inspeccion.findMany({
       include: {
@@ -79,6 +70,14 @@ export class InspeccionesService {
   async update(id: number, updateInspeccioneDto: UpdateInspeccioneDto) {
     await this.findOne(id);
 
+    if (updateInspeccioneDto.solicitudId) {
+      await this.validateSolicitud(updateInspeccioneDto.solicitudId);
+    }
+
+    if (updateInspeccioneDto.inspectorId) {
+      await this.validateInspector(updateInspeccioneDto.inspectorId);
+    }
+
     try {
       // Si un campo no viene (undefined), Prisma no lo modifica
       return await this.prisma.inspeccion.update({
@@ -104,12 +103,6 @@ export class InspeccionesService {
         );
       }
 
-      if (isPrismaForeignKeyError(error)) {
-        throw new BadRequestException(
-          'La solicitud o el inspector indicados no existen.',
-        );
-      }
-
       throw error;
     }
   }
@@ -118,5 +111,30 @@ export class InspeccionesService {
     await this.findOne(id);
 
     return this.prisma.inspeccion.delete({ where: { id } });
+  }
+
+  private async validateSolicitud(solicitudId: number) {
+    const solicitud = await this.prisma.solicitud.findUnique({
+      where: { id: solicitudId },
+    });
+
+    if (!solicitud) {
+      throw new NotFoundException(
+        `No existe una solicitud con id ${solicitudId}.`,
+      );
+    }
+  }
+
+  // El inspector es un usuario de la tabla User
+  private async validateInspector(inspectorId: number) {
+    const inspector = await this.prisma.user.findUnique({
+      where: { id: inspectorId },
+    });
+
+    if (!inspector) {
+      throw new NotFoundException(
+        `No existe un inspector con id ${inspectorId}.`,
+      );
+    }
   }
 }
