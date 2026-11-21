@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUnidadeDto } from './dto/create-unidade.dto';
-import { UpdateUnidadeDto } from './dto/update-unidade.dto';
+import { CreateUnidadeDto } from './dto/create-unidade.dto.js';
+import { UpdateUnidadeDto } from './dto/update-unidade.dto.js';
 
 @Injectable()
 export class UnidadesService {

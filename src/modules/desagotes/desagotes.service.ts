@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDesagoteDto } from './dto/create-desagote.dto';
-import { UpdateDesagoteDto } from './dto/update-desagote.dto';
+import { CreateDesagoteDto } from './dto/create-desagote.dto.js';
+import { UpdateDesagoteDto } from './dto/update-desagote.dto.js';
 
 @Injectable()
 export class DesagotesService {

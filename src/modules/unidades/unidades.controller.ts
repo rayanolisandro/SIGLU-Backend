@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { UnidadesService } from './unidades.service';
-import { CreateUnidadeDto } from './dto/create-unidade.dto';
-import { UpdateUnidadeDto } from './dto/update-unidade.dto';
+import { UnidadesService } from './unidades.service.js';
+import { CreateUnidadeDto } from './dto/create-unidade.dto.js';
+import { UpdateUnidadeDto } from './dto/update-unidade.dto.js';
 
 @Controller('unidades')
 export class UnidadesController {
