@@ -13,15 +13,11 @@ export class CreateImbornaleDto {
 
   @IsOptional()
   @IsString({ message: 'El estado de limpieza tiene que ser texto' })
-  @MaxLength(20, {
-    message: 'El estado de limpieza no puede pasar de 20 caracteres',
-  })
+  @MaxLength(20, { message: 'El estado de limpieza no puede pasar de 20 caracteres' })
   limpieza?: string;
 
   @IsOptional()
   @IsString({ message: 'El estado de la estructura tiene que ser texto' })
-  @MaxLength(20, {
-    message: 'El estado de la estructura no puede pasar de 20 caracteres',
-  })
+  @MaxLength(20, { message: 'El estado de la estructura no puede pasar de 20 caracteres' })
   estructura?: string;
 }

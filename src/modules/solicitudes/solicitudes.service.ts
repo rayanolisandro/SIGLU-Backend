@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateSolicitudeDto } from './dto/create-solicitude.dto.js';
 import { UpdateSolicitudeDto } from './dto/update-solicitude.dto.js';
@@ -26,7 +22,6 @@ export class SolicitudesService {
         prioridad: createSolicitudeDto.prioridad,
         telefonoContacto: createSolicitudeDto.telefonoContacto,
         estado: createSolicitudeDto.estado,
-        // Si no mandan fecha, la base de datos pone la de hoy
         fecha: createSolicitudeDto.fecha
           ? new Date(createSolicitudeDto.fecha)
           : undefined,
@@ -66,7 +61,6 @@ export class SolicitudesService {
       await this.validateImbornal(updateSolicitudeDto.imbornalId);
     }
 
-    // Si un campo no viene (undefined), Prisma no lo modifica
     return this.prisma.solicitud.update({
       where: { id },
       data: {
@@ -112,7 +106,6 @@ export class SolicitudesService {
     }
   }
 
-  // No se puede borrar una solicitud que tiene inspecciones o desagotes
   private async validateSinRegistrosAsociados(solicitudId: number) {
     const inspecciones = await this.prisma.inspeccion.count({
       where: { solicitudId },

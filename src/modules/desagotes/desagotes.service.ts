@@ -53,7 +53,6 @@ export class DesagotesService {
       await this.validateUnidad(updateDesagoteDto.unidadId);
     }
 
-    // Si un campo no viene (undefined), Prisma no lo modifica
     return this.prisma.desagote.update({
       where: { id },
       data: {

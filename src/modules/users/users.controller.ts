@@ -1,16 +1,7 @@
-import {
-  Controller,
-  Get,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  ParseIntPipe,
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from './users.service.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 
-// Los usuarios se crean con POST /auth/register, por eso acá no hay POST
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

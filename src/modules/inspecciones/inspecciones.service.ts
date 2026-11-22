@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { isPrismaUniqueConstraintError } from '../prisma/prisma-error.util.js';
 import { CreateInspeccioneDto } from './dto/create-inspeccione.dto.js';
@@ -10,7 +6,7 @@ import { UpdateInspeccioneDto } from './dto/update-inspeccione.dto.js';
 
 @Injectable()
 export class InspeccionesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(createInspeccioneDto: CreateInspeccioneDto) {
     await this.validateSolicitud(createInspeccioneDto.solicitudId);
@@ -31,7 +27,6 @@ export class InspeccionesService {
         },
       });
     } catch (error) {
-      // El número de acta es único: si ya existe, Prisma tira error
       if (isPrismaUniqueConstraintError(error)) {
         throw new ConflictException(
           'Ya existe una inspección con ese número de acta.',
@@ -79,7 +74,6 @@ export class InspeccionesService {
     }
 
     try {
-      // Si un campo no viene (undefined), Prisma no lo modifica
       return await this.prisma.inspeccion.update({
         where: { id },
         data: {
@@ -125,7 +119,6 @@ export class InspeccionesService {
     }
   }
 
-  // El inspector es un usuario de la tabla User
   private async validateInspector(inspectorId: number) {
     const inspector = await this.prisma.user.findUnique({
       where: { id: inspectorId },
@@ -134,6 +127,12 @@ export class InspeccionesService {
     if (!inspector) {
       throw new NotFoundException(
         `No existe un inspector con id ${inspectorId}.`,
+      );
+    }
+
+    if (inspector.rol.toLowerCase() !== 'inspector') {
+      throw new ConflictException(
+        'El usuario seleccionado no tiene el rol de inspector.',
       );
     }
   }

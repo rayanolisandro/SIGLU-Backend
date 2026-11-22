@@ -37,7 +37,6 @@ export class ImbornalesService {
   async remove(id: number) {
     await this.findOne(id);
 
-    // Si el imbornal tiene solicitudes, quedan sin imbornal (imbornalId en null)
     return this.prisma.imbornal.delete({ where: { id } });
   }
 }

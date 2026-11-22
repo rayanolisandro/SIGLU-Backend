@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  ParseIntPipe,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { ImbornalesService } from './imbornales.service.js';
 import { CreateImbornaleDto } from './dto/create-imbornale.dto.js';
 import { UpdateImbornaleDto } from './dto/update-imbornale.dto.js';

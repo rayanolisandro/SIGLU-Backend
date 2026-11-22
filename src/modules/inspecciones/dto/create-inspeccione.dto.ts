@@ -1,25 +1,12 @@
-import {
-  IsDateString,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MaxLength,
-  Min,
-} from 'class-validator';
+import { IsDateString, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 
 export class CreateInspeccioneDto {
   @IsString({ message: 'El número de acta tiene que ser texto' })
   @IsNotEmpty({ message: 'Falta ingresar el número de acta' })
-  @MaxLength(30, {
-    message: 'El número de acta no puede pasar de 30 caracteres',
-  })
+  @MaxLength(30, { message: 'El número de acta no puede pasar de 30 caracteres'})
   numeroActa: string;
 
-  @IsDateString(
-    {},
-    { message: 'La fecha tiene que tener formato válido (ej: 2026-11-20)' },
-  )
+  @IsDateString({}, { message: 'La fecha tiene que tener formato válido (ej: 2026-11-20)' })
   fecha: string;
 
   @IsString({ message: 'La norma tiene que ser texto' })

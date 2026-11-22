@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { isPrismaUniqueConstraintError } from '../prisma/prisma-error.util.js';
 import { CreateUnidadeDto } from './dto/create-unidade.dto.js';
@@ -16,7 +12,6 @@ export class UnidadesService {
     try {
       return await this.prisma.unidad.create({ data: createUnidadeDto });
     } catch (error) {
-      // El interno y el dominio son únicos: si ya existen, Prisma tira error
       if (isPrismaUniqueConstraintError(error)) {
         throw new ConflictException(
           'Ya existe una unidad con ese número de interno o dominio.',
@@ -67,7 +62,6 @@ export class UnidadesService {
     return this.prisma.unidad.delete({ where: { id } });
   }
 
-  // No se puede borrar una unidad que tiene desagotes cargados
   private async validateSinDesagotes(unidadId: number) {
     const desagotes = await this.prisma.desagote.count({
       where: { unidadId },

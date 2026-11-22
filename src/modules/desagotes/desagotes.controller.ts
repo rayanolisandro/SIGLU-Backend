@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  ParseIntPipe,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { DesagotesService } from './desagotes.service.js';
 import { CreateDesagoteDto } from './dto/create-desagote.dto.js';
 import { UpdateDesagoteDto } from './dto/update-desagote.dto.js';

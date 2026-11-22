@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  ParseIntPipe,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { UnidadesService } from './unidades.service.js';
 import { CreateUnidadeDto } from './dto/create-unidade.dto.js';
 import { UpdateUnidadeDto } from './dto/update-unidade.dto.js';

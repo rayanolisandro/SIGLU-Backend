@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  ParseIntPipe,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { SolicitudesService } from './solicitudes.service.js';
 import { CreateSolicitudeDto } from './dto/create-solicitude.dto.js';
 import { UpdateSolicitudeDto } from './dto/update-solicitude.dto.js';

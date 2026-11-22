@@ -1,11 +1,4 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class RegisterAuthDto {
   @IsString({ message: 'El nombre tiene que ser texto' })
@@ -22,12 +15,8 @@ export class RegisterAuthDto {
 
   @IsString({ message: 'El CUIL tiene que ser texto' })
   @IsNotEmpty({ message: 'Falta ingresar el CUIL' })
-  @MinLength(11, {
-    message: 'El CUIL tiene que tener 11 números (sin guiones)',
-  })
-  @MaxLength(11, {
-    message: 'El CUIL tiene que tener 11 números (sin guiones)',
-  })
+  @MinLength(11, { message: 'El CUIL tiene que tener 11 números (sin guiones)' })
+  @MaxLength(11, { message: 'El CUIL tiene que tener 11 números (sin guiones)' })
   cuil: string;
 
   @IsString({ message: 'El legajo tiene que ser texto' })
@@ -45,12 +34,8 @@ export class RegisterAuthDto {
 
   @IsString({ message: 'La contraseña tiene que ser texto' })
   @IsNotEmpty({ message: 'Falta ingresar la contraseña' })
-  @MinLength(8, {
-    message: 'La contraseña tiene que tener al menos 8 caracteres',
-  })
-  @MaxLength(72, {
-    message: 'La contraseña es demasiado larga (máximo 72 caracteres)',
-  })
+  @MinLength(8, { message: 'La contraseña tiene que tener al menos 8 caracteres' })
+  @MaxLength(72, { message: 'La contraseña es demasiado larga (máximo 72 caracteres)' })
   password: string;
 
   @IsOptional()

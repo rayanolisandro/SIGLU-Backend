@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { isPrismaUniqueConstraintError } from '../prisma/prisma-error.util.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
@@ -10,9 +6,6 @@ import { UpdateUserDto } from './dto/update-user.dto.js';
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
-
-  // En todas las consultas usamos "select" para elegir qué campos devolver
-  // y así no mandar nunca la contraseña.
 
   findAll() {
     return this.prisma.user.findMany({
@@ -96,7 +89,6 @@ export class UsersService {
     });
   }
 
-  // No se puede borrar un usuario que cargó solicitudes o hizo inspecciones
   private async validateSinRegistrosAsociados(userId: number) {
     const solicitudes = await this.prisma.solicitud.count({
       where: { userId },

@@ -1,12 +1,4 @@
-import {
-  IsDateString,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MaxLength,
-  Min,
-} from 'class-validator';
+import { IsDateString, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 
 export class CreateSolicitudeDto {
   @IsString({ message: 'El tipo tiene que ser texto' })
@@ -21,9 +13,7 @@ export class CreateSolicitudeDto {
 
   @IsString({ message: 'La descripción tiene que ser texto' })
   @IsNotEmpty({ message: 'Falta escribir la descripción' })
-  @MaxLength(1000, {
-    message: 'La descripción no puede pasar de 1000 caracteres',
-  })
+  @MaxLength(1000, { message: 'La descripción no puede pasar de 1000 caracteres' })
   descripcion: string;
 
   @IsString({ message: 'La prioridad tiene que ser texto' })
@@ -33,9 +23,7 @@ export class CreateSolicitudeDto {
 
   @IsOptional()
   @IsString({ message: 'El teléfono de contacto tiene que ser texto' })
-  @MaxLength(30, {
-    message: 'El teléfono de contacto no puede pasar de 30 caracteres',
-  })
+  @MaxLength(30, { message: 'El teléfono de contacto no puede pasar de 30 caracteres' })
   telefonoContacto?: string;
 
   @IsOptional()
@@ -44,10 +32,7 @@ export class CreateSolicitudeDto {
   estado?: string;
 
   @IsOptional()
-  @IsDateString(
-    {},
-    { message: 'La fecha tiene que tener formato válido (ej: 2026-11-20)' },
-  )
+  @IsDateString({}, { message: 'La fecha tiene que tener formato válido (ej: 2026-11-20)' })
   fecha?: string;
 
   @IsOptional()

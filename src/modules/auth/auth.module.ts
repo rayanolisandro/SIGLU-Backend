@@ -6,8 +6,6 @@ import { AuthController } from './auth.controller.js';
 
 @Module({
   imports: [
-    // Configura JWT: la clave secreta sale del archivo .env
-    // y el token dura 1 hora
     JwtModule.registerAsync({
       useFactory: () => {
         const secret = process.env.JWT_SECRET;
